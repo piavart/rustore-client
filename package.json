@@ -1,0 +1,31 @@
+{
+  "name": "@piavart/rustore-client",
+  "version": "0.0.1-alfa.1",
+  "description": "nodejs rustore client",
+  "author": "Arseny Vorobyov <piavarts@gmail.com>",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "nodejs",
+    "rustore",
+    "rustore-client"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "strftime": "^0.10.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/strftime": "^0.9.4",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.2",
+    "typescript": "^4.9.5"
+  }
+}
