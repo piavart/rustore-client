@@ -5,5 +5,6 @@ package-lock.json
 .github
 .eslintrc.js
 tsconfig.json
+tsconfig.build.json
 .prettierrc
 .commitlintrc.json

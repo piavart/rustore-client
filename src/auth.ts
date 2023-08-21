@@ -14,6 +14,7 @@ export class RSAuth {
   private sessionEnd: number | undefined;
 
   constructor(
+    // eslint-disable-next-line no-multi-spaces
     privateKey: string,
     private readonly companyId: number,
   ) {
