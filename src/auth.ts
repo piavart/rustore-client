@@ -1,4 +1,4 @@
-import { createSign } from 'node:crypto';
+import { createSign } from 'crypto';
 import axios from 'axios';
 import * as strftime from 'strftime';
 
