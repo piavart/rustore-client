@@ -30,6 +30,14 @@ export class RuStoreClient {
     return result.body;
   }
 
+  public async getSandboxPurchase(purchaseToken: string): Promise<RS_Purchace> {
+    const result = await this.request<TBaseResponse<RS_Purchace>>(
+      `${Path.SandboxPurchase}${purchaseToken}`,
+    );
+
+    return result.body;
+  }
+
   public async getSubscription(
     purchaseToken: string,
   ): Promise<RS_SubscriptionResponse_Body> {
