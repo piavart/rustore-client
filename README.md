@@ -12,10 +12,13 @@ import { RuStoreClient } from '@piavart/rustore-client';
 
 const privateKey = 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASZ...'
 const companyId = 123;
+const isSandbox = false;
 
-const client = new RuStoreClient(privateKey, companyId);
+const client = new RuStoreClient(privateKey, companyId, isSandbox);
 
 const purchase = await client.getPurchase('123.321');
 ```
 
 В настоящий момент реализован функционал верификации платежей и получение информации о подписке по токену платежа.
+
+[RuStore API](https://www.rustore.ru/help/work-with-rustore-api/)

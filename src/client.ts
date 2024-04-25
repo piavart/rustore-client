@@ -14,7 +14,11 @@ export class RuStoreClient {
   private readonly auth: RSAuth;
   private readonly httpClient = axios.create({ baseURL: API_URL });
 
-  constructor(privateKey: string, companyId: number) {
+  constructor(
+    privateKey: string,
+    companyId: number,
+    private readonly isSandbox: boolean = false,
+  ) {
     this.auth = new RSAuth(privateKey, companyId);
   }
 
@@ -23,16 +27,10 @@ export class RuStoreClient {
   }
 
   public async getPurchase(purchaseToken: string): Promise<RS_Purchace> {
-    const result = await this.request<TBaseResponse<RS_Purchace>>(
-      `${Path.Purchase}${purchaseToken}`,
-    );
+    const path = this.isSandbox ? Path.SandboxPurchase : Path.Purchase;
 
-    return result.body;
-  }
-
-  public async getSandboxPurchase(purchaseToken: string): Promise<RS_Purchace> {
     const result = await this.request<TBaseResponse<RS_Purchace>>(
-      `${Path.SandboxPurchase}${purchaseToken}`,
+      `${path}${purchaseToken}`,
     );
 
     return result.body;
@@ -41,16 +39,20 @@ export class RuStoreClient {
   public async getSubscription(
     purchaseToken: string,
   ): Promise<RS_SubscriptionResponse_Body> {
+    const path = this.isSandbox ? Path.SandboxSubscription : Path.Subscription;
+
     const result = await this.request<
       TBaseResponse<RS_SubscriptionResponse_Body>
-    >(`${Path.Subscription}${purchaseToken}`);
+    >(`${path}${purchaseToken}`);
 
     return result.body;
   }
 
   public async isSubscriptionActive(purchaseToken: string): Promise<boolean> {
+    const path = this.isSandbox ? Path.SandboxSubscription : Path.Subscription;
+
     const result = await this.request<TBaseResponse<RS_SubscriptionState>>(
-      `${Path.Subscription}${purchaseToken}/state`,
+      `${path}${purchaseToken}/state`,
     );
 
     return result.body.is_active;
