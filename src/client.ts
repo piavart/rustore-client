@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 import { RSAuth } from './auth';
+import { API_URL, Path } from './constants';
+import { RuStoreError } from './errors';
 import {
   RS_Purchace,
   RS_SubscriptionResponse_Body,
   RS_SubscriptionState,
+  RS_VersionStatusResponse_Body,
 } from './interfaces';
-import { API_URL, Path } from './constants';
-import { RuStoreError } from './errors';
 import { TBaseResponse, TErrorResponse } from './types';
 
 export class RuStoreClient {
@@ -56,6 +57,31 @@ export class RuStoreClient {
     );
 
     return result.body.is_active;
+  }
+
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/get-version-status
+   */
+  public async getVersionStatus(
+    packageName: string,
+    ids: number | undefined = undefined,
+    page: number = 0,
+    size: number = 20,
+  ): Promise<RS_VersionStatusResponse_Body> {
+    const searchParams = new URLSearchParams();
+
+    if (undefined !== ids) {
+      searchParams.append('ids', `${ids}`);
+    } else {
+      searchParams.append('page', `${page}`);
+      searchParams.append('size', `${size}`);
+    }
+
+    const result = await this.request<
+      TBaseResponse<RS_VersionStatusResponse_Body>
+    >(`${Path.Version}${packageName}/version?${searchParams.toString()}`);
+
+    return result.body;
   }
 
   private async request<T>(path: string) {
