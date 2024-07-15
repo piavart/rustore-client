@@ -11,10 +11,10 @@
 import { RuStoreClient } from '@piavart/rustore-client';
 
 const privateKey = 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASZ...'
-const companyId = 123;
+const keyId = 123;
 const isSandbox = false;
 
-const client = new RuStoreClient(privateKey, companyId, isSandbox);
+const client = new RuStoreClient(privateKey, keyId, isSandbox);
 
 const purchase = await client.getPurchase('123.321');
 ```

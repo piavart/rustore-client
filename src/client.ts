@@ -18,10 +18,10 @@ export class RuStoreClient {
 
   constructor(
     privateKey: string,
-    companyId: number,
+    keyId: number,
     private readonly isSandbox: boolean = false,
   ) {
-    this.auth = new RSAuth(privateKey, companyId);
+    this.auth = new RSAuth(privateKey, keyId);
   }
 
   public init() {
