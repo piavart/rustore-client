@@ -162,3 +162,42 @@ export type RS_SubscriptionResponse_Body = {
 export type RS_SubscriptionState = {
   readonly is_active: boolean;
 };
+
+export type RS_Version = {
+  versionId: number;
+  appName: string;
+  appType: 'MAIN' | 'GAME';
+  versionName: string;
+  versionCode: number;
+  versionStatus:
+    | 'ACTIVE'
+    | 'PARTIAL_ACTIVE'
+    | 'READY_FOR_PUBLICATION'
+    | 'PREVIOUS_ACTIVE'
+    | 'ARCHIVED'
+    | 'REJECTED_BY_MODERATOR'
+    | 'TAKEN_FOR_MODERATION'
+    | 'MODERATION'
+    | 'AUTO_CHECK'
+    | 'AUTO_CHECK_FAILED'
+    | 'DRAFT'
+    | 'DELETED_DRAFT'
+    | 'REJECTED_BY_SECURITY';
+  publishType: 'MANUAL' | 'INSTANTLY' | 'DELAYED';
+  publishDateTime: string;
+  sendDateForModer: string;
+  partialValue: number;
+  whatsNew: string;
+  priceValue: number;
+  paid: boolean;
+};
+
+export type RS_VersionsResponse_Body = {
+  readonly content: Array<RS_Version>;
+  readonly pageNumber: number;
+  readonly pageSize: number;
+  readonly totalElements: number;
+  readonly totalPages: number;
+};
+
+export type RS_LastActiveVersionResponse_Body = RS_Version;

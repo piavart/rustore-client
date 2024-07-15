@@ -1,13 +1,15 @@
 import axios from 'axios';
 
 import { RSAuth } from './auth';
+import { API_URL, Path } from './constants';
+import { RuStoreError } from './errors';
 import {
+  RS_LastActiveVersionResponse_Body,
   RS_Purchace,
   RS_SubscriptionResponse_Body,
   RS_SubscriptionState,
+  RS_VersionsResponse_Body,
 } from './interfaces';
-import { API_URL, Path } from './constants';
-import { RuStoreError } from './errors';
 import { TBaseResponse, TErrorResponse } from './types';
 
 export class RuStoreClient {
@@ -56,6 +58,59 @@ export class RuStoreClient {
     );
 
     return result.body.is_active;
+  }
+
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/get-version-status
+   */
+  public async getVersions(
+    packageName: string,
+    page: number = 0,
+    size: number = 20,
+  ): Promise<RS_VersionsResponse_Body> {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      size: size.toString(),
+    });
+
+    const result = await this.request<TBaseResponse<RS_VersionsResponse_Body>>(
+      `${Path.Version}${packageName}/version?${searchParams.toString()}`,
+    );
+
+    return result.body;
+  }
+
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/get-version-status
+   */
+  public async getVersion(
+    packageName: string,
+    version: number,
+  ): Promise<RS_VersionsResponse_Body> {
+    const searchParams = new URLSearchParams({
+      ids: version.toString(),
+    });
+
+    const result = await this.request<TBaseResponse<RS_VersionsResponse_Body>>(
+      `${Path.Version}${packageName}/version?${searchParams.toString()}`,
+    );
+
+    return result.body;
+  }
+
+  public async getLastActiveVersion(
+    packageName: string,
+  ): Promise<RS_LastActiveVersionResponse_Body | null> {
+    const versions = await this.getVersions(packageName);
+    const activeVersions = versions.content.filter(
+      (version) => 'ACTIVE' === version.versionStatus,
+    );
+
+    if (0 === activeVersions.length) {
+      return null;
+    }
+
+    return activeVersions[0];
   }
 
   private async request<T>(path: string) {
