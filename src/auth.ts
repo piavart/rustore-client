@@ -1,5 +1,5 @@
-import { createSign } from 'crypto';
 import axios from 'axios';
+import { createSign } from 'crypto';
 import * as strftime from 'strftime';
 
 import { API_URL, Path } from './constants';
@@ -16,7 +16,7 @@ export class RSAuth {
   constructor(
     // eslint-disable-next-line no-multi-spaces
     privateKey: string,
-    private readonly companyId: number,
+    private readonly keyId: number,
   ) {
     this.privateKey = `-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----`;
   }
@@ -26,7 +26,7 @@ export class RSAuth {
     const t = strftime.timezone('+0300');
     const dateStr = t('%Y-%m-%dT%H:%M:%S+03:00', date);
 
-    const str = `${this.companyId}${dateStr}`;
+    const str = `${this.keyId}${dateStr}`;
 
     const sign = createSign('RSA-SHA512');
     sign.write(str);
@@ -36,7 +36,7 @@ export class RSAuth {
     try {
       const result = await this.httpClient.post<TAuthResponse>(Path.Auth, {
         timestamp: dateStr,
-        companyId: this.companyId,
+        keyId: this.keyId,
         signature,
       });
 
