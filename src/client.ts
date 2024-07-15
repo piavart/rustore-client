@@ -65,8 +65,8 @@ export class RuStoreClient {
    */
   public async getVersions(
     packageName: string,
-    page: number = 0,
-    size: number = 20,
+    page = 0,
+    size = 20,
   ): Promise<RS_VersionsResponse_Body> {
     const searchParams = new URLSearchParams({
       page: page.toString(),
