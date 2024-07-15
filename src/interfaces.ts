@@ -192,10 +192,12 @@ export type RS_Version = {
   paid: boolean;
 };
 
-export type RS_VersionStatusResponse_Body = {
+export type RS_VersionsResponse_Body = {
   readonly content: Array<RS_Version>;
   readonly pageNumber: number;
   readonly pageSize: number;
   readonly totalElements: number;
   readonly totalPages: number;
 };
+
+export type RS_LastActiveVersionResponse_Body = RS_Version;
