@@ -4,7 +4,8 @@ import * as strftime from 'strftime';
 
 import { API_URL, Path } from './constants';
 import { RuStoreError } from './errors';
-import { TAuthResponse, TErrorResponse } from './types';
+import { TAuthResponse } from './types';
+import { getRustoreError } from './utils/get-rustore-error';
 
 export class RSAuth {
   private readonly httpClient = axios.create({ baseURL: API_URL });
@@ -47,9 +48,7 @@ export class RSAuth {
       this.$jwe = result.data.body.jwe;
       this.sessionEnd = date.valueOf() + (result.data.body.ttl - 10) * 1000;
     } catch (e: any) {
-      const data = e.response.data as TErrorResponse;
-
-      throw new RuStoreError(data);
+      throw new RuStoreError(getRustoreError(e));
     }
   }
 
