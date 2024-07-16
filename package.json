@@ -1,6 +1,6 @@
 {
   "name": "@piavart/rustore-client",
-  "version": "0.2.1-jsrsasign",
+  "version": "0.2.1-jsrsasign1",
   "description": "nodejs rustore client",
   "author": "Arseny Vorobyov <piavarts@gmail.com>",
   "main": "dist/index.js",
