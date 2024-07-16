@@ -1,6 +1,6 @@
 {
   "name": "@piavart/rustore-client",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "nodejs rustore client",
   "author": "Arseny Vorobyov <piavarts@gmail.com>",
   "main": "dist/index.js",
@@ -20,10 +20,11 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
-    "crypto": "^1.0.1",
+    "jsrsasign": "^11.1.0",
     "strftime": "^0.10.2"
   },
   "devDependencies": {
+    "@types/jsrsasign": "^10.5.14",
     "@types/node": "^18.17.6",
     "@types/strftime": "^0.9.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

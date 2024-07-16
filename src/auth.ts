@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { createSign } from 'crypto';
+import { KEYUTIL, KJUR, RSAKey, hextob64 } from 'jsrsasign';
 import * as strftime from 'strftime';
 
 import { API_URL, Path } from './constants';
 import { RuStoreError } from './errors';
-import { TAuthResponse, TErrorResponse } from './types';
+import { TAuthResponse } from './types';
+import { getRustoreError } from './utils/get-rustore-error';
 
 export class RSAuth {
   private readonly httpClient = axios.create({ baseURL: API_URL });
-  private readonly privateKey: string;
+  private readonly privateKey: RSAKey;
 
   private $jwe: string | undefined;
   private sessionEnd: number | undefined;
@@ -18,7 +19,9 @@ export class RSAuth {
     privateKey: string,
     private readonly keyId: number,
   ) {
-    this.privateKey = `-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----`;
+    this.privateKey = KEYUTIL.getKey(
+      `-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----`,
+    ) as RSAKey;
   }
 
   public async auth() {
@@ -28,10 +31,12 @@ export class RSAuth {
 
     const str = `${this.keyId}${dateStr}`;
 
-    const sign = createSign('RSA-SHA512');
-    sign.write(str);
-    sign.end();
-    const signature = sign.sign(this.privateKey, 'base64');
+    const sig = new KJUR.crypto.Signature({ alg: 'SHA512withRSA' });
+    sig.init(this.privateKey);
+    sig.updateString(str);
+    const signatureHex = sig.sign();
+    const signatureBase64 = hextob64(signatureHex);
+    const signature = signatureBase64;
 
     try {
       const result = await this.httpClient.post<TAuthResponse>(Path.Auth, {
@@ -43,9 +48,7 @@ export class RSAuth {
       this.$jwe = result.data.body.jwe;
       this.sessionEnd = date.valueOf() + (result.data.body.ttl - 10) * 1000;
     } catch (e: any) {
-      const data = e.response.data as TErrorResponse;
-
-      throw new RuStoreError(data);
+      throw new RuStoreError(getRustoreError(e));
     }
   }
 
