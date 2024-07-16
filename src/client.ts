@@ -10,7 +10,8 @@ import {
   RS_SubscriptionState,
   RS_VersionsResponse_Body,
 } from './interfaces';
-import { TBaseResponse, TErrorResponse } from './types';
+import { TBaseResponse } from './types';
+import { getRustoreError } from './utils/get-rustore-error';
 
 export class RuStoreClient {
   private readonly auth: RSAuth;
@@ -123,17 +124,7 @@ export class RuStoreClient {
 
       return result.data;
     } catch (e: any) {
-      const data = e.response.data as TErrorResponse | '';
-
-      if (!data) {
-        throw new RuStoreError({
-          code: 'ERROR',
-          message: e.response.statusText,
-          timestamp: '',
-        });
-      }
-
-      throw new RuStoreError(data);
+      throw new RuStoreError(getRustoreError(e));
     }
   }
 }
