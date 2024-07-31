@@ -19,6 +19,6 @@ const client = new RuStoreClient(privateKey, keyId, isSandbox);
 const purchase = await client.getPurchase('123.321');
 ```
 
-В настоящий момент реализован функционал верификации платежей и получение информации о подписке по токену платежа.
+В настоящий момент реализован функционал верификации платежей, получение информации о подписке по токену платежа и получение информации о версиях приложения в сторе.
 
 [RuStore API](https://www.rustore.ru/help/work-with-rustore-api/)

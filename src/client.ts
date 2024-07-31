@@ -29,6 +29,9 @@ export class RuStoreClient {
     return this.auth.auth();
   }
 
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-subscription-payment/api-token-payment-method
+   */
   public async getPurchase(purchaseToken: string): Promise<RS_Purchace> {
     const path = this.isSandbox ? Path.SandboxPurchase : Path.Purchase;
 
@@ -39,6 +42,9 @@ export class RuStoreClient {
     return result.body;
   }
 
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-subscription-payment/api-token-subscription-method
+   */
   public async getSubscription(
     purchaseToken: string,
   ): Promise<RS_SubscriptionResponse_Body> {
@@ -51,6 +57,9 @@ export class RuStoreClient {
     return result.body;
   }
 
+  /**
+   * @see https://www.rustore.ru/help/work-with-rustore-api/api-subscription-payment/api-token-substatus-method
+   */
   public async isSubscriptionActive(purchaseToken: string): Promise<boolean> {
     const path = this.isSandbox ? Path.SandboxSubscription : Path.Subscription;
 
